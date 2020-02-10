@@ -59,5 +59,12 @@ module TodoableWrapper
       response
     end
 
+    def add_item(id, item_name)
+      item = { item: {name: item_name} }
+      options = { body: item.to_json, headers: {"Authorization" => "Token token=\"#{@token}\""} }
+      response = self.class.post("/lists/#{id}/items", options)
+      response
+    end
+
   end
 end
