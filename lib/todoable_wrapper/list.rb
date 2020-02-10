@@ -4,7 +4,7 @@ module TodoableWrapper
   class Client
     module List
     
-      def list_lists(options = {})
+      def lists(options = {})
         validate_token
         options = { headers: {"Authorization" => "Token token=\"#{@token}\""} }
         response = self.class.get('/lists', options)
@@ -20,6 +20,7 @@ module TodoableWrapper
       end
     
       def create_list(list_name)
+        binding.pry
         validate_token
         list = { list: {name: list_name} }
         options = { body: list.to_json, headers: {"Authorization" => "Token token=\"#{@token}\""} }
