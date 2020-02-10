@@ -72,5 +72,11 @@ module TodoableWrapper
       response
     end
 
+    def finish_item(list_id, item_id)
+      options = { headers: {"Authorization" => "Token token=\"#{@token}\""} }
+      response = self.class.put("/lists/#{list_id}/items/#{item_id}/finish", options)
+      response
+    end
+
   end
 end
