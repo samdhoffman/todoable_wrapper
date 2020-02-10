@@ -32,5 +32,13 @@ module TodoableWrapper
       puts response
     end
 
+    def get_list_by_id(id)
+      options = { headers: {"Authorization" => "Token token=\"#{@token}\""} }
+      response = self.class.get("/lists/#{id}", options)
+      list = JSON.parse(response.body)
+      binding.pry
+      list
+    end
+
   end
 end
