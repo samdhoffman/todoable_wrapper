@@ -53,5 +53,11 @@ module TodoableWrapper
       self.class.patch("/lists/#{id}", options)
     end
 
+    def delete_list(id)
+      options = { headers: {"Authorization" => "Token token=\"#{@token}\""} }
+      response = self.class.delete("/lists/#{id}", options)
+      response
+    end
+
   end
 end
