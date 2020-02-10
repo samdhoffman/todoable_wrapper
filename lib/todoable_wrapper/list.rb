@@ -8,7 +8,6 @@ module TodoableWrapper
         validate_token
         options = { headers: {"Authorization" => "Token token=\"#{@token}\""} }
         response = self.class.get('/lists', options)
-        binding.pry
         JSON.parse(response.body)
       end
     
@@ -20,7 +19,6 @@ module TodoableWrapper
       end
     
       def create_list(list_name)
-        binding.pry
         validate_token
         list = { list: {name: list_name} }
         options = { body: list.to_json, headers: {"Authorization" => "Token token=\"#{@token}\""} }

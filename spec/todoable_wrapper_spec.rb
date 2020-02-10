@@ -18,7 +18,7 @@ RSpec.describe TodoableWrapper::Client do
   describe "#new" do
     let(:client) { File.read('spec/fixtures/authenticate.json') }
 
-    before "creating client" do
+    it "authenticates client" do
       stub_request(:get, "https://todoable.teachable.tech/api/authenticate").
       to_return(status: 200, body: client, headers: {})
     end
@@ -29,15 +29,7 @@ RSpec.describe TodoableWrapper::Client do
 
     it "must include a token expiration date" do
       expect(DateTime.parse(JSON.parse(client)["expires_at"])).to be_instance_of(DateTime)
-    end
-
-    # it "must have a lists method" do
-    #   expect(described_class).to respond_to(:lists)
-    # end
-
-    # it "must have get list by id method" do
-    #   expect(client).to respond_to(:get_list_by_id)
-    # end
+    end   
   end
 
   describe "GET lists" do
