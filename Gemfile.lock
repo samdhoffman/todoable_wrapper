@@ -41,7 +41,6 @@ GEM
       rspec-support (~> 3.9.0)
     rspec-support (3.9.2)
     safe_yaml (1.0.5)
-    vcr (5.1.0)
     webmock (3.8.1)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
@@ -55,7 +54,6 @@ DEPENDENCIES
   rake (~> 12.0)
   rspec (~> 3.0)
   todoable_wrapper!
-  vcr
   webmock
 
 BUNDLED WITH
