@@ -9,7 +9,7 @@ module TodoableWrapper
 
     def initialize(u, p)
       @auth = { username: u, password: p }
-      get_token    
+      get_token
     end
 
     def get_token
@@ -27,8 +27,7 @@ module TodoableWrapper
     def lists(options = {})
       options = { headers: {"Authorization" => "Token token=\"#{@token}\""} }
       response = self.class.get('/lists', options)
-      # lists = JSON.parse(response.body)
-      lists = JSON.parse([lists].to_json).first
+      lists = JSON.parse(response.body)
       lists
 
     end
@@ -36,8 +35,7 @@ module TodoableWrapper
     def get_list_by_id(id)
       options = { headers: {"Authorization" => "Token token=\"#{@token}\""} }
       response = self.class.get("/lists/#{id}", options)
-      # list = JSON.parse(response.body)
-      list = JSON.parse([list].to_json).first
+      list = JSON.parse(response.body)
       list
     end
 
@@ -45,6 +43,7 @@ module TodoableWrapper
       list = { list: {name: list_name} }
       options = { body: list.to_json, headers: {"Authorization" => "Token token=\"#{@token}\""} }
       response = self.class.post("/lists", options)
+      response.code
     end
 
     def update_list(id, list_name)
@@ -56,26 +55,26 @@ module TodoableWrapper
     def delete_list(id)
       options = { headers: {"Authorization" => "Token token=\"#{@token}\""} }
       response = self.class.delete("/lists/#{id}", options)
-      response
+      response.code
     end
 
     def add_item(id, item_name)
       item = { item: {name: item_name} }
       options = { body: item.to_json, headers: {"Authorization" => "Token token=\"#{@token}\""} }
       response = self.class.post("/lists/#{id}/items", options)
-      response
+      response.code
     end
 
     def delete_item(list_id, item_id)
       options = { headers: {"Authorization" => "Token token=\"#{@token}\""} }
       response = self.class.delete("/lists/#{list_id}/items/#{item_id}", options)
-      response
+      response.code
     end
 
     def finish_item(list_id, item_id)
       options = { headers: {"Authorization" => "Token token=\"#{@token}\""} }
       response = self.class.put("/lists/#{list_id}/items/#{item_id}/finish", options)
-      response
+      response.code
     end
 
   end
