@@ -1,0 +1,13 @@
+{
+  "lists": [
+    {
+      "name": "Urgent Things",
+      "src":  "https://todoable.teachable.tech/api/lists/:list_id",
+      "id":  "12345"
+    }, {
+      "name": "Shopping List",
+      "src":  "https://todoable.teachable.tech/api/lists/:list_id",
+      "id":  "6789"
+    }
+  ]
+}

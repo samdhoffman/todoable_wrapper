@@ -14,53 +14,44 @@ RSpec.describe TodoableWrapper::Client do
   describe "#new" do
     let(:client) { described_class.new('xxxx', 'xxxx') }
 
-    before do
-      VCR.insert_cassette 'authenticate', :record => :new_episodes
-    end
-
-    after do
-      VCR.eject_cassette
-    end
-
-    it "records the fixture" do
-      client
-    end
-
     it "takes 2 parameters and returns a Client object" do
       expect(client).to be_instance_of(described_class)
     end
 
-    it "must set token instance variable" do
-      expect(client.instance_variable_get(:@token)).to eq("06e4d7f1-392c-4b8a-acad-d111ee615729")
+    it "must have a lists method" do
+      expect(client).to respond_to(:lists)
+    end
+
+    it "must have get list by id method" do
+      expect(client).to respond_to(:get_list_by_id)
+    end
+  end
+
+  describe "get token" do
+    let(:token) { File.read('spec/fixtures/authenticate.json') }
+    it "must return a token string" do
+      stub_request(:get, "https://todoable.teachable.tech/api/authenticate").
+        to_return(status: 200, body: token, headers: {})
+        expect(JSON.parse(token)["token"]).to be_instance_of(String)
     end
   end
 
   describe "GET lists" do
-    let(:client) { described_class.new('samdhoffman@gmail.com', 'todoable') }
-    let(:lists) { client.lists }
-
-    before do
-      VCR.insert_cassette 'lists', :record => :new_episodes
-    end
-
-    after do
-      VCR.eject_cassette
-    end
-
-    it "records the fixture" do
-      lists
-    end
-
-    it "response must have lists as an attribute" do
-      expect(lists).to include("lists")
-    end
-
+    let(:lists) { File.read('spec/fixtures/lists.json') }
     it "must return an array of lists" do
-      expect(lists["lists"]).to be_instance_of(Array)
+      stub_request(:get, "https://todoable.teachable.tech/api/lists").
+        to_return(status: 200, body: lists, headers: {})
+        
+      expect(JSON.parse(lists)["lists"]).to be_instance_of(Array)
     end
+  end
 
-    it "must have a lists method" do
-      expect(client).to respond_to(:lists)
+  describe "GET list by id" do
+    let(:list_info) { File.read('spec/fixtures/list_info.json') }
+    it "looks up a list by id" do
+      stub_request(:get, "https://todoable.teachable.tech/api/lists/12345").
+        to_return(status: 200, body: list_info, headers: {})
+        expect(list_info).to include("name") 
     end
   end
   
