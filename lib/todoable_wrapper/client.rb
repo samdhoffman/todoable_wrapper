@@ -47,5 +47,11 @@ module TodoableWrapper
       response = self.class.post("/lists", options)
     end
 
+    def update_list(id, list_name)
+      list = { list: {name: list_name} }
+      options = { body: list.to_json, headers: {"Authorization" => "Token token=\"#{@token}\""} }
+      self.class.patch("/lists/#{id}", options)
+    end
+
   end
 end
