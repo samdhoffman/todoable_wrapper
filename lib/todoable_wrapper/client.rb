@@ -24,5 +24,13 @@ module TodoableWrapper
       end
     end
 
+    def lists(options = {})
+      options = { headers: {"Authorization" => "Token token=\"#{@token}\""} }
+      response = self.class.get('/lists', options)
+      binding.pry
+      # redirect to get token if unauthorized
+      puts response
+    end
+
   end
 end
