@@ -27,17 +27,24 @@ module TodoableWrapper
     def lists(options = {})
       options = { headers: {"Authorization" => "Token token=\"#{@token}\""} }
       response = self.class.get('/lists', options)
-      binding.pry
-      # redirect to get token if unauthorized
-      puts response
+      # lists = JSON.parse(response.body)
+      lists = JSON.parse([lists].to_json).first
+      lists
+
     end
 
     def get_list_by_id(id)
       options = { headers: {"Authorization" => "Token token=\"#{@token}\""} }
       response = self.class.get("/lists/#{id}", options)
-      list = JSON.parse(response.body)
-      binding.pry
+      # list = JSON.parse(response.body)
+      list = JSON.parse([list].to_json).first
       list
+    end
+
+    def create_list(list_name)
+      list = { list: {name: list_name} }
+      options = { body: list.to_json, headers: {"Authorization" => "Token token=\"#{@token}\""} }
+      response = self.class.post("/lists", options)
     end
 
   end
