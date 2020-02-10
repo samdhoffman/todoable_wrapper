@@ -15,41 +15,29 @@ RSpec.describe TodoableWrapper::Client do
     end
   end
 
-  # describe "#new" do
-    # let(:client) { described_class.new('xxxx', 'xxxx') }
+  describe "#new" do
+    let(:client) { File.read('spec/fixtures/authenticate.json') }
 
-    # before do
-    #   VCR.insert_cassette 'authenticate', :record => :new_episodes
-    # end
-
-    # after do
-    #   VCR.eject_cassette
-    # end
-
-    # it "records the fixture" do
-    #   client
-    # end
-
-  #   it "takes 2 parameters and returns a Client object" do
-  #     expect(client).to be_instance_of(described_class)
-  #   end
-
-  #   it "must have a lists method" do
-  #     expect(client).to respond_to(:lists)
-  #   end
-
-  #   it "must have get list by id method" do
-  #     expect(client).to respond_to(:get_list_by_id)
-  #   end
-  # end
-
-  describe "get token" do
-    let(:token) { File.read('spec/fixtures/authenticate.json') }
-    it "must return a token string" do
+    before "creating client" do
       stub_request(:get, "https://todoable.teachable.tech/api/authenticate").
-        to_return(status: 200, body: token, headers: {})
-        expect(JSON.parse(token)["token"]).to be_instance_of(String)
+      to_return(status: 200, body: client, headers: {})
     end
+
+    it "must include a token string" do
+        expect(JSON.parse(client)["token"]).to be_instance_of(String)
+    end
+
+    it "must include a token expiration date" do
+      expect(DateTime.parse(JSON.parse(client)["expires_at"])).to be_instance_of(DateTime)
+    end
+
+    # it "must have a lists method" do
+    #   expect(described_class).to respond_to(:lists)
+    # end
+
+    # it "must have get list by id method" do
+    #   expect(client).to respond_to(:get_list_by_id)
+    # end
   end
 
   describe "GET lists" do
@@ -67,8 +55,46 @@ RSpec.describe TodoableWrapper::Client do
     it "looks up a list by id" do
       stub_request(:get, "https://todoable.teachable.tech/api/lists/12345").
         to_return(status: 200, body: list_info, headers: {})
-        expect(list_info).to include("name")
-        
+      expect(list_info).to include("name")
+    end
+  end
+
+  describe "POST new list" do
+    let(:new_list) { File.read('spec/fixtures/new_list.json') }
+    it "looks up a list by id" do
+      stub_request(:post, "https://todoable.teachable.tech/api/lists").
+        to_return(status: 201, body: new_list, headers: {})
+      expect(new_list).to include("name")
+    end
+  end
+
+  describe "DELETE list by id" do
+    it "deletes a list by id" do
+      stub_request(:delete, "https://todoable.teachable.tech/api/lists/12345").
+        to_return(status: 204, headers: {})
+    end
+  end
+
+  describe "POST new item" do
+    let(:item) { File.read('spec/fixtures/item.json') }
+    it "looks up a list by id" do
+      stub_request(:post, "https://todoable.teachable.tech/api/lists/794fd7ba-adf6-4491-a427-98209be5a696/items").
+        to_return(status: 204, body: item, headers: {})
+      expect(item).to include("name")
+    end
+  end
+
+  describe "POST to finish item" do
+    it "marks an item in a list as finished" do
+      stub_request(:post, "https://todoable.teachable.tech/api/lists/794fd7ba-adf6-4491-a427-98209be5a696/items/a0c72f88-3db2-4ef8-a3e7-0133ad7dfe31").
+        to_return(status: 200, headers: {})
+    end
+  end
+
+  describe "DELETE item by id" do
+    it "deletes a list item by id" do
+      stub_request(:delete, "https://todoable.teachable.tech/api/lists/794fd7ba-adf6-4491-a427-98209be5a696/items/a0c72f88-3db2-4ef8-a3e7-0133ad7dfe31").
+        to_return(status: 204, headers: {})
     end
   end
   
