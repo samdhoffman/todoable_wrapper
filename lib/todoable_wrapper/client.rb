@@ -66,5 +66,11 @@ module TodoableWrapper
       response
     end
 
+    def delete_item(list_id, item_id)
+      options = { headers: {"Authorization" => "Token token=\"#{@token}\""} }
+      response = self.class.delete("/lists/#{list_id}/items/#{item_id}", options)
+      response
+    end
+
   end
 end
