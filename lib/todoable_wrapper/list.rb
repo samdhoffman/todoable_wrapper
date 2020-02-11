@@ -8,14 +8,22 @@ module TodoableWrapper
         validate_token
         options = { headers: {"Authorization" => "Token token=\"#{@token}\""} }
         response = self.class.get('/lists', options)
-        JSON.parse(response.body)
+        if response.success?
+          JSON.parse(response.body)
+        else
+          response
+        end
       end
     
       def get_list_by_id(id)
         validate_token
         options = { headers: {"Authorization" => "Token token=\"#{@token}\""} }
         response = self.class.get("/lists/#{id}", options)
-        JSON.parse(response.body)
+        if response.success?
+          JSON.parse(response.body)
+        else
+          response
+        end
       end
     
       def create_list(list_name)
@@ -30,7 +38,8 @@ module TodoableWrapper
         validate_token
         list = { list: {name: list_name} }
         options = { body: list.to_json, headers: {"Authorization" => "Token token=\"#{@token}\""} }
-        self.class.patch("/lists/#{id}", options)
+        response = self.class.patch("/lists/#{id}", options)
+        response.code
       end
     
       def delete_list(id)
