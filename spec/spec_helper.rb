@@ -1,7 +1,5 @@
 require "bundler/setup"
 require "todoable_wrapper"
-
-# dependencies
 require 'webmock/rspec'
 
 WebMock.disable_net_connect!(allow_localhost: true)
