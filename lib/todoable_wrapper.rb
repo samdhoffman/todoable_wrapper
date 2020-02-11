@@ -1,6 +1,5 @@
 require "todoable_wrapper/version"
 require 'httparty'
-require 'pry' # remove later
 
 Dir[File.dirname(__FILE__) + '/todoable_wrapper/*.rb'].each do |file|
   require file
