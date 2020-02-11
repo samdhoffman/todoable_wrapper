@@ -18,7 +18,6 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "httparty", "~> 0.17.3"
 
-  spec.metadata["allowed_push_host"] = "http://mygemserver.com"
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/samdhoffman/todoable_wrapper"
 
