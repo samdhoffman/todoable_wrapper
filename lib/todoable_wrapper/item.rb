@@ -4,11 +4,11 @@ module TodoableWrapper
   class Client
     module Item
     
-      def add_item(id, item_name)
+      def add_item(list_id, item_name)
         validate_token
         item = { item: {name: item_name} }
         options = { body: item.to_json, headers: {"Authorization" => "Token token=\"#{@token}\""} }
-        response = self.class.post("/lists/#{id}/items", options)
+        response = self.class.post("/lists/#{list_id}/items", options)
         response.code
       end
     
