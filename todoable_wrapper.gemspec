@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 12.0"
   spec.add_development_dependency "webmock", "~> 2.1"
 
-  spec.add_runtime_dependency "httparty"
+  spec.add_runtime_dependency "httparty", "~> 0.17.3"
 
   spec.metadata["allowed_push_host"] = "http://mygemserver.com"
   spec.metadata["homepage_uri"] = spec.homepage
